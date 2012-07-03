@@ -1,0 +1,13 @@
+probe kernel.function ("__do_page_cache_readahead")
+{
+        dev_nr = $filp->f_path->dentry->d_inode->i_sb->s_dev
+        inode_nr = $filp->f_path->dentry->d_inode->i_ino
+        if (inode_nr == $1)
+              printf ("%s(%d) 0x%x/%u %d %d\n", execname(), pid(), 
+                                      dev_nr, inode_nr, $nr_to_read, $lookahead_size)
+}
+
+probe begin
+{
+        print ("begin probe\n")
+}

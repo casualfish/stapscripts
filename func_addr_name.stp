@@ -1,0 +1,19 @@
+global addr
+
+probe kernel.function("mpage_readpages")
+{
+        print("hit func...\n")
+        addr = sprintf("%p", $get_block)
+        exit()
+}
+
+probe begin
+{
+        print("staring probe...\n");
+}
+
+probe end
+{
+        print("Function address and name are:\n")
+        symname(addr)
+}

@@ -1,0 +1,11 @@
+probe kernel.function("blkdev_get")
+{
+        print("**************************************\n")
+        print_backtrace()
+        print("**************************************\n")
+}
+
+probe begin
+{
+        print("probe begin...\n")
+}

@@ -1,0 +1,11 @@
+global reads
+probe vfs.read
+{
+        reads[execname(),pid()] <<< 1
+}
+
+probe timer.s(3)
+{
+        foreach([var1,var2] in reads)
+                printf("%s (%d) : %d \n", var1, var2, @count(reads[var1,var2]))
+}
