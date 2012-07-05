@@ -15,5 +15,5 @@ probe begin
 probe end
 {
         print("Function address and name are:\n")
-        symname(addr)
+        print_stack(addr)
 }
