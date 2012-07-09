@@ -1,8 +1,9 @@
-probe kernel.function("blkdev_get")
+probe module("ext3").function("ext3_try_to_allocate")
 {
         print("**************************************\n")
         print_backtrace()
         print("**************************************\n")
+        exit()
 }
 
 probe begin
