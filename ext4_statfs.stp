@@ -1,0 +1,17 @@
+%{
+        #include <linux/statfs.h>
+        #include <linux/math64.h>
+%}
+
+function change_statfs:long (stat:long, modify:long)
+%{
+        if(THIS->modify > 0) {
+                struct kstatfs* buf = (struct kstatfs*)(long)THIS->stat;
+                buf->f_bfree = buf->f_bavail = div_s64(buf->f_bavail*THIS->modify, 100);
+        }
+%}
+
+probe module("ext4").function("ext4_statfs").return
+{
+        change_statfs($buf, $1)
+}
