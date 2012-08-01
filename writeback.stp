@@ -1,0 +1,19 @@
+probe begin
+{
+        print("starting probe...\n")
+}
+
+probe kernel.function("wb_writeback")
+{
+        print("*****wb_writeback begin****\n")
+}
+
+probe kernel.function("wb_writeback").return
+{
+        print("**********end**************\n")
+}
+
+probe kernel.function("writeback_single_inode")
+{
+        printf("%s(%d) %d\n", execname(), pid(), $inode->i_ino)
+}
