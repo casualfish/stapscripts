@@ -1,0 +1,9 @@
+probe scheduler.cpu_on
+{
+        printf("process %s on cpu #%d\n", execname(), cpu());
+}
+
+probe scheduler.cpu_off
+{
+        printf("process %s off cpu #%d\n", execname(), cpu());
+}
