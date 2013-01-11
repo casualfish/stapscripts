@@ -1,0 +1,20 @@
+//usage stap --ldd --all-modules stackcount.stp *@fs/read_write.c
+global backtraces 
+
+probe begin
+{
+  print("begin probing...\n")
+}
+
+probe kernel.function(@1).call {
+  backtraces[sprint_backtrace()] <<< 1
+}
+
+probe end {
+  foreach (bt in backtraces-) {
+    print("**********************************************\n")
+    printf("%s\n%d\n", bt, @count(backtraces[bt]))
+    print("**********************************************\n")
+  }
+  exit()
+}
